@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STARTrimCommunity</title>
+    <link rel="stylesheet" href="design/style.css">
+</head>
+<body>
+
+    <div class="background">
+        <div class="navbar">
+
+            <div class="menu">
+                <div class="logo">
+                    <img src="design/startrimlogo.png" alt="STARTrim Logo">
+                </div>
+                <ul>
+                    <li><a href="#" data-translate="HOME">HOME</a></li>
+                    <li><a href="#" data-translate="ABOUT">ABOUT</a></li>
+                    <li><a href="#" data-translate="SERVICE">SERVICE</a></li>
+                    <li><a href="#" data-translate="DESIGN">DESIGN</a></li>
+                    <li><a href="#" data-translate="CONTACT">CONTACT</a></li>
+                </ul>
+                <div class="search">
+                <form action="#" method="get" class="search-form">
+                    <input class="srch" type="search" name="search" placeholder="Type To text">
+                    <button type="submit" class="btn">Search</button>
+                </form>
+            </div>
+
+            <div class="language-selector">
+                <select id="language-select">
+                    <option value="en">English</option>
+                    <option value="he">עברית</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="content">
+            <h1 data-translate="INNOVATION_ENTREPRENEURSHIP_TECHNOLOGY_COURSE">Innovation & <br><span>Entrepreneurship</span> <br>And technology course</h1>
+            <p class="par" data-translate="COMMUNITY_DESCRIPTION">
+                <br> The "STARTrim" community brings together young men and women from all over the country
+                <br> who are interested in the fields of entrepreneurship, technology, and personal development.
+                <br> In the community we place a lot of emphasis on providing value for community we place a lot
+                <br> of emphasis on providing value for community members, we hold a monthly event on various topics
+                <br> and create content on the community's virtual channel.
+                <br> The community is a home for the sons and daughters of the youth in Israel designed to
+                <br> create a place for connection and learning in order to nurture the future generation
+                <br> of the State of Israel.</p>
+
+                <div class="form">
+                    <input type="email" name="email" placeholder="Enter Email Here">
+                    <input type="password" name="" placeholder="Enter Password Here">
+                    <button class="btnn"><a href="#">Login</a></button>
+
+                    <p class="link" data-translate="NO_ACCOUNT">Don't have an account<br>
+                    <a href="signup.html" data-translate="SIGN_UP">Sign up </a><a data-translate="HERE"> here</a></p>
+                    <p class="liw" data-translate="LOGIN_WITH">Log in with</p>
+
+                    <div class="icons">
+                        <a href="#"><ion-icon name="logo-facebook"></ion-icon></a>
+                        <a href="#"><ion-icon name="logo-instagram"></ion-icon></a>
+                        <a href="#"><ion-icon name="logo-twitter"></ion-icon></a>
+                        <a href="#" onclick="signInWithGoogle()"><ion-icon name="logo-google"></ion-icon></a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="807118098633-d61d9q5sn9bn4pr1s3kn6hloqgbivli1.apps.googleusercontent.com" content="807118098633-bpclon7bnhbspvg9n43c2vksb3s7un0f.apps.googleusercontent.com">
+
+    <script>
+        document.getElementById('language-select').addEventListener('change', function() {
+            var selectedLanguage = this.value;
+            changeLanguage(selectedLanguage);
+        });
+
+        function changeLanguage(selectedLanguage) {
+            fetch('Language/' + selectedLanguage + '.json')
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelectorAll('[data-translate]').forEach(element => {
+                        const key = element.getAttribute('data-translate');
+                        if (data[key]) {
+                            element.textContent = data[key];
+                        }
+                    });
+
+                    document.getElementById('your-information-heading').textContent = data['YOUR_INFORMATION'];
+                })
+                .catch(error => console.error('Error fetching language file:', error));
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            changeLanguage(document.getElementById('language-select').value);
+        });
+
+        function signInWithGoogle() {
+            gapi.load('auth2', function() {
+                var auth2 = gapi.auth2.init({
+                    client_id: 'YOUR_CLIENT_ID.apps.googleusercontent.com',
+                    cookiepolicy: 'single_host_origin'
+                });
+
+                auth2.signIn().then(function(googleUser) {
+                    var profile = googleUser.getBasicProfile();
+                    console.log('ID: ' + profile.getId());
+                    console.log('Name: ' + profile.getName());
+                    console.log('Image URL: ' + profile.getImageUrl());
+                    console.log('Email: ' + profile.getEmail());
+                }, function(error) {
+                    console.log(error);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
